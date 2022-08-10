@@ -165,23 +165,13 @@ def get_environment(
                 low, high, np.array(observation_space.shape), dtype=np.float32
             )
 
-            action_mask_space = self.nativeEnv.getActionMaskSpace()
+            action_mask_space = np.array(self.nativeEnv.getActionMask())
             if action_mask_space is not None:
-                low = (
-                    action_mask_space.low[0]
-                    if len(action_mask_space.low) == 1
-                    else np.array(action_mask_space.low)
-                )
-                high = (
-                    action_mask_space.high[0]
-                    if len(action_mask_space.high) == 1
-                    else np.array(action_mask_space.high)
-                )
                 observation_space = gym.spaces.Dict(
                     {
                         "action_mask": gym.spaces.Box(
-                            low,
-                            high,
+                            0,
+                            1,
                             np.array(action_mask_space.shape),
                             dtype=np.float32,
                         ),
