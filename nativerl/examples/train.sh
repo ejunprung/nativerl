@@ -245,9 +245,9 @@ fi
 mkdir -p $OUTPUT_DIR/PPO
 cp -r python/* .
 
-PYTHON=$(which python.exe) || PYTHON=$(which python3)
+#PYTHON=$(which python.exe) || PYTHON=$(which python3)
 
-"$PYTHON"  run.py training \
+python3 run.py training \
     --algorithm "PPO" \
     --output-dir "$OUTPUT_DIR" \
     --environment "$ENVIRONMENT_CLASS" \
