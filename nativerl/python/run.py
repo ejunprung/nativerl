@@ -80,7 +80,7 @@ def main(
     :param max_memory_in_mb: The maximum amount of memory in MB to use for Java environments.
     :param cpu_count: The number of CPUs to let init Ray for the training.
     :param num_cpus: The number of CPU cores to let RLlib use during training.
-    :param num_gpus: The number of GPUs to let RLlib use during training.
+    :param num_gpus: The number of GPUs to let RLlib use during training. (e.g. 1 = One GPU)
     :param num_workers: The number of parallel workers that RLlib should execute during training.
     :param num_hidden_layers: The number of hidden layers in the MLP to use for the learning model.
     :param num_hidden_nodes: The number of nodes per layer in the MLP to use for the learning model.
@@ -162,7 +162,7 @@ def main(
         else 20000
     )
 
-    ray.init(log_to_driver=user_log, dashboard_host="127.0.0.1", num_cpus=cpu_count)
+    ray.init(log_to_driver=user_log, dashboard_host="127.0.0.1", num_cpus=cpu_count, num_gpus=num_gpus)
 
     model = get_custom_model(
         num_hidden_nodes=num_hidden_nodes,
@@ -206,9 +206,9 @@ def main(
         "env": env_name,
         "env_config": env_config,
         "callbacks": callbacks,
-        "num_gpus": num_gpus,
         "num_workers": num_workers,
         "num_cpus_per_worker": num_cpus,
+        "num_gpus_per_worker": num_gpus / num_workers,
         "model": model,
         "use_gae": True,
         "vf_loss_coeff": 1.0,
